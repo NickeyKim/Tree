@@ -1,8 +1,10 @@
 ﻿using System;
-
+using System.Collections.Generic;
 /*Making Binary Tree*/
 namespace Tree
 {
+
+
 	public class Node
 	{
 		private Node left;
@@ -18,7 +20,13 @@ namespace Tree
 		public Node getLeft() {return left;}
 		public Node getRight() {return right;}
 		public int getValue() {return value;}
-		/* Lookup Binary Search Tree 
+
+		public void printValue()
+		{
+			Console.Write (value+ " ");
+		}
+
+		/* Lookup Binary Search Tree : O(logN)
 		->Compare the value with Current Node
 		Starts at the head of Tree
 		while CurVal != Null
@@ -42,7 +50,8 @@ namespace Tree
 			}
 			return root;
 		}
-		/* Making Recursively find Node in Binary search Tree */
+		/* Making Recursively find Node in Binary search Tree :O(logN)
+		*/
 		public Node findRecur(Node root, int value)
 		{
 			if (root == null)
@@ -56,6 +65,72 @@ namespace Tree
 				} else {
 					return findRecur (root.getLeft (), value);
 				}
+			}
+		}
+		/* find the height of tree in Binary Tree : O(n)
+		 * -> the maximum distance of root node to leaf node */
+		public static int findHeight (Node root) {
+			if (root == null)
+				return 0;
+			return 1 + Math.Max (findHeight(root.getLeft()), findHeight(root.getLeft()));
+		}
+		/* Preorder Traversal : O(n)
+		 * if root == null return;
+		 * print root;
+		 * recursively print left child;
+		 * recursively print right child; */
+		public void preorder(Node root){
+			if (root == null)
+				return;
+			root.printValue ();
+			preorder (root.getLeft ());
+			preorder (root.getRight ());
+		}
+		/* Inorder Traversal  : O(n)
+		 * if root = null return;
+		 * recursively print left child;
+		 * print root;
+		 * recursively print right child; */
+		public void inorder (Node root){
+			if (root == null)
+				return;
+			inorder (root.getLeft ());
+			root.printValue ();
+			inorder (root.getRight ());
+		}
+		/* postorder Traversal :  O(n)
+		 * if root= null return;
+		 * recursively print left child;
+		 * recursively print right child;
+		 * print root;*/
+		public void postorder( Node root){
+			if (root == null)
+				return;
+			postorder (root.getLeft ());
+			postorder (root.getRight ());
+			root.printValue();
+		}
+		/*Preorder Traversal non-recursive
+		 * Make a stack
+		 * insert root in Stack
+		 * while(stack not empty)
+		 * 	pop curNode
+		 *  print curNode
+		 *  if it has right child, insert child in Stack
+		 *  if it has left child, insert chuld in Stack */
+		public void preorderNonRecur(Node root){
+			Stack<Node> stack=new Stack<Node>();
+			stack.Push(root);
+
+			while(stack.Count>0){
+				Node currval=stack.Pop();
+				currval.printValue();
+
+				Node n=currval.getRight();
+				if(n!=null) stack.Push(n);
+
+				n = currval.getLeft ();
+				if(n!=null) stack.Push(n);
 			}
 		}
 
@@ -78,9 +153,15 @@ namespace Tree
 				
 				Console.WriteLine ("Not Found");
 			}
-
-
-			Console.WriteLine ("Hello World!");
+			int height = findHeight (f);
+			Console.WriteLine ("Height: "+height);
+			a.preorder (a);
+			Console.WriteLine ("");
+			a.inorder (a);
+			Console.WriteLine ("");
+			a.postorder (a);
+			Console.WriteLine ("");
+			a.preorderNonRecur (a);
 		}
 	}
 
