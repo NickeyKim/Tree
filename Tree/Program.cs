@@ -110,30 +110,56 @@ namespace Tree
 			postorder (root.getRight ());
 			root.printValue();
 		}
-		/*Preorder Traversal non-recursive
+		/*Preorder Traversal non-recursive : O(n) (is free of Overhead)
 		 * Make a stack
 		 * insert root in Stack
 		 * while(stack not empty)
 		 * 	pop curNode
 		 *  print curNode
 		 *  if it has right child, insert child in Stack
-		 *  if it has left child, insert chuld in Stack */
+		 *  if it has left child, insert child in Stack */
 		public void preorderNonRecur(Node root){
 			Stack<Node> stack=new Stack<Node>();
 			stack.Push(root);
 
 			while(stack.Count>0){
-				Node currval=stack.Pop();
-				currval.printValue();
+				Node curNode=stack.Pop();
+				curNode.printValue();
 
-				Node n=currval.getRight();
+				Node n=curNode.getRight();
 				if(n!=null) stack.Push(n);
 
-				n = currval.getLeft ();
+				n = curNode.getLeft ();
 				if(n!=null) stack.Push(n);
 			}
 		}
-
+		/* Find Lowest Common Ancestor : O(logN)
+		 * starts at the root
+		 * while curNode != null
+		 * if curNode > valueA and valueB
+		 * 	go to the left child
+		 * if curNode < valueA and valueB
+		 *  go to the right child
+		 * else return curNode */
+		public Node LowestCommonAncestor(Node root, int valueA, int valueB){
+			while (root != null) {
+				int rootval = root.getValue ();
+				if (rootval > valueA && rootval > valueB) {
+					root = root.getLeft ();
+				} else if (rootval < valueA && rootval < valueB) {
+					root = root.getRight ();
+				} else {
+					return root;
+				}
+			}
+			return null;
+		}
+		/* overload LowestCommonAncestor to get the reference of two nodes */
+		public Node LowestCommonAncestor(Node root, Node nodeA, Node nodeB){
+			if (root == null || nodeA == null || nodeB == null)
+				return null;
+			return LowestCommonAncestor(root, nodeA.getValue(), nodeB.getValue());
+		}
 		public static void Main (string[] args)
 		{
 			Node d = new Node (null, null, 1);
@@ -162,6 +188,8 @@ namespace Tree
 			a.postorder (a);
 			Console.WriteLine ("");
 			a.preorderNonRecur (a);
+			Console.WriteLine ("");
+			Console.WriteLine (a.LowestCommonAncestor (a, f,g ).getValue ());
 		}
 	}
 
