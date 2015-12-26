@@ -160,6 +160,83 @@ namespace Tree
 				return null;
 			return LowestCommonAncestor(root, nodeA.getValue(), nodeB.getValue());
 		}
+		/* Max Heapify Binary Tree using Traverse */
+		/*
+		public static Node HeapifyTraverse(Node root)
+		{
+			if (root == null)
+				return null;
+
+			root.left = HeapifyTraverse(root.left);
+			root.right = HeapifyTraverse(root.right);
+
+			//sift root down
+			return SiftNodeDownInBST(root);
+		}
+
+		public static Node SiftNodeDownInBST(Node node)
+		{
+			Node right = node.right;
+			Node nodeToReturn = right;
+			Node left = node.left;
+			while (right != null)
+			{
+				node.left = right.left;
+				node.right = right.right;
+				right.right = SiftNodeDownInBST(node);
+				right.left = left;
+
+				right = node.right;
+				left = node.left;
+			}
+			if (left != null)
+			{
+				if (left.value > node.value)
+				{
+					nodeToReturn = left;
+					Node l = left.left;
+					Node r = left.right;
+					left.right = node.right;
+					node.left = l;
+					node.right = r;
+					left.left = SiftNodeDownInBST(node);
+				}
+			}
+			if (nodeToReturn != null)
+				return nodeToReturn;
+			else
+				return node;
+		}*/
+
+		public void HeapifyTraverse(Node root)
+		{
+			if (root == null)
+				return;
+			HeapifyTraverse (root.getLeft());
+			HeapifyTraverse (root.getRight());
+			Node largest = root;
+			if (root.getLeft () != null && root.getLeft ().getValue () > root.getValue()) {
+				largest = root.getLeft ();
+			}
+			if (root.getRight () != null && root.getRight().getValue() > root.getValue()) {
+
+				largest = root.getRight ();
+			}
+			if (largest != root) {
+				swap (root, largest);
+				}
+		}
+		public void swap( Node root, Node largest)  //swapping each node's left and right
+		{
+			int temp = root.value;
+			root.value= largest.value;
+			largest.value= temp;
+			if (largest.right != null && largest.right.value > largest.value) {
+				swap (largest, largest.right);
+			}
+
+		}
+
 		public static void Main (string[] args)
 		{
 			Node d = new Node (null, null, 1);
@@ -170,26 +247,35 @@ namespace Tree
 			Node b = new Node (d, e, 3);
 			Node c = new Node (f, g, 10);
 			Node a = new Node (b, c, 5);
-
-			Node find = new Node (null, null, 0);
-			find = find.findRecur (a, 0);
+			Console.WriteLine ("BST");
+			Console.WriteLine ("   5   ");
+			Console.WriteLine (" 3---10 ");
+			Console.WriteLine ("1-4-7-12");
+			int findval = 10;
+			Node find = new Node (null, null, findval);
+			find = find.findRecur (a, findval);
 			if (find != null) {
-				Console.WriteLine ("Value:" + find.getValue () + " found");
+				Console.WriteLine ("" +
+					"Value:" + find.getValue () + " found");
 			} else {
 				
-				Console.WriteLine ("Not Found");
+				Console.WriteLine ("Value:" + findval + " Not Found");
 			}
 			int height = findHeight (f);
 			Console.WriteLine ("Height: "+height);
 			a.preorder (a);
-			Console.WriteLine ("");
+			Console.WriteLine ("->Preorder");
 			a.inorder (a);
-			Console.WriteLine ("");
+			Console.WriteLine ("->Inorder");
 			a.postorder (a);
-			Console.WriteLine ("");
+			Console.WriteLine ("->Postorder");
 			a.preorderNonRecur (a);
-			Console.WriteLine ("");
+			Console.WriteLine ("->Preorder_Not_Recursive");
 			Console.WriteLine (a.LowestCommonAncestor (a, f,g ).getValue ());
+			Console.WriteLine ("->LowestCommonAncestor");
+			a.HeapifyTraverse (a);
+			a.preorder(a);
+
 		}
 	}
 
