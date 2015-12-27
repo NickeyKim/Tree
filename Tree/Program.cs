@@ -236,7 +236,18 @@ namespace Tree
 			}
 
 		}
-
+		public Node RoateRight(){
+			Node newRoot = left;
+			left = newRoot.right;
+			newRoot.right = this;
+			return newRoot;
+		}
+		public static Node RoateRightStatic(Node oldRoot){
+			Node newRoot = oldRoot.getLeft ();
+			oldRoot.left = newRoot.getRight ();
+			newRoot.right = oldRoot;
+			return newRoot;
+		}
 		public static void Main (string[] args)
 		{
 			Node d = new Node (null, null, 1);
@@ -275,6 +286,20 @@ namespace Tree
 			Console.WriteLine ("->LowestCommonAncestor");
 			a.HeapifyTraverse (a);
 			a.preorder(a);
+			Console.WriteLine ("->HeapifyTraverse");
+			d = new Node (null, null, 1);
+			e = new Node (null, null, 3);
+			f = new Node (null, null, 5);
+			g = new Node (null, null, 7);
+
+			b = new Node (d, e, 2);
+			c = new Node (b, f, 4);
+			a = new Node (c, g, 6);
+			a.preorder (a);
+			Console.WriteLine ("");
+			RoateRightStatic (a);
+//			a.RoateRight ();
+			c.preorder (c);
 
 		}
 	}
